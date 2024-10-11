@@ -42,7 +42,7 @@ public class MenuController {
         model.addAttribute("menu", menu);
 
         return "menu/detail";
-
+    }
     //리다이렉트
     @GetMapping("/querymethod")
     public void queryMethodPage() {}

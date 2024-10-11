@@ -29,7 +29,7 @@ public class MenuService {
         Menu menu = menuRepository.findById(menuCode).orElseThrow(IllegalArgumentException::new);
 
         return modelMapper.map(menu, MenuDTO.class);
-
+    }
     public List<MenuDTO> findByMenuPrice(Integer menuPrice) {
         List<Menu> menus = menuRepository.findByMenuPriceGreaterThan(menuPrice);
 
