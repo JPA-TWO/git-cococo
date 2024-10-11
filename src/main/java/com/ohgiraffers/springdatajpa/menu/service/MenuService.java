@@ -16,7 +16,6 @@ import java.util.List;
 @Service
 public class MenuService {
 
-
     private final MenuRepository menuRepository;
     private final ModelMapper modelMapper;
 
@@ -24,6 +23,12 @@ public class MenuService {
         this.menuRepository = menuRepository;
         this.modelMapper = modelMapper;
     }
+
+    public MenuDTO findMenuByCode(int menuCode) {
+
+        Menu menu = menuRepository.findById(menuCode).orElseThrow(IllegalArgumentException::new);
+
+        return modelMapper.map(menu, MenuDTO.class);
 
     public List<MenuDTO> findByMenuPrice(Integer menuPrice) {
         List<Menu> menus = menuRepository.findByMenuPriceGreaterThan(menuPrice);

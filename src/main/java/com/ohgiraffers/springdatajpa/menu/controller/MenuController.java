@@ -12,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -27,12 +28,20 @@ import java.util.List;
 @RequestMapping("/menu")
 public class MenuController {
 
-
     private final MenuService menuService;
 
     public MenuController(MenuService menuService) {
         this.menuService = menuService;
     }
+
+    @GetMapping("/{menuCode}")
+    public String findMenuByCode(@PathVariable int menuCode, Model model) {
+
+        MenuDTO menu = menuService.findMenuByCode(menuCode);
+
+        model.addAttribute("menu", menu);
+
+        return "menu/detail";
 
     //리다이렉트
     @GetMapping("/querymethod")
