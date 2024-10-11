@@ -28,8 +28,8 @@ public class MenuService {
     public List<MenuDTO> findByMenuPrice(Integer menuPrice) {
         List<Menu> menus = menuRepository.findByMenuPriceGreaterThan(menuPrice);
 
-        return  menus.stream().map(menu -> modelMapper.map(menu,MenuDTO.class)).toList();
-
+        return menus.stream().map(menu -> modelMapper.map(menu, MenuDTO.class)).toList();
+    }
     /* 목차. Page -> 페이징 처리 후 */
     public Page<MenuDTO> findMenuList(Pageable pageable) {
 

@@ -40,7 +40,7 @@ public class MenuController {
 
     //가격으로 서치 (일정 가격 "초과" 목록 조회) => 다중 조회
     @GetMapping("/search")
-    public String finfByMenu(@RequestParam Integer menuPrice, Model m){
+    public String finfByMenu(@RequestParam Integer menuPrice, Model m) {
         //form으로 온 데이터 받기
         //받은 데이터로 처리한 뒤 모델에 적용
         List<MenuDTO> menus = menuService.findByMenuPrice(menuPrice);
@@ -50,6 +50,7 @@ public class MenuController {
         // 리다이렉트
 
         return "menu/searchResult";
+    }
 
     @GetMapping("/list")
     public String findMenuList(@PageableDefault Pageable pageable, Model model) {
