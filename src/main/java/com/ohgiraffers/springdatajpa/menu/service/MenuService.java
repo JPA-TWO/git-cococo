@@ -49,6 +49,18 @@ public class MenuService {
     }
 
     @Transactional
+    public void registNewMenu(MenuDTO newMenu) {
+        menuRepository.save(modelMapper.map(newMenu, Menu.class));
+    }
+
+    @Transactional
+    public void modifyMenu(MenuDTO modifyMenu) {
+
+        Menu foundMenu = menuRepository.findById(modifyMenu.getMenuCode()).orElseThrow(IllegalArgumentException::new);
+        foundMenu.setMenuName(modifyMenu.getMenuName());
+    }
+
+    @Transactional
     public void deleteMenu(Integer menuCode) {
         menuRepository.deleteById(menuCode);
     }
