@@ -8,10 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MenuService {
+
 
     private final MenuRepository menuRepository;
     private final ModelMapper modelMapper;
@@ -20,6 +24,11 @@ public class MenuService {
         this.menuRepository = menuRepository;
         this.modelMapper = modelMapper;
     }
+
+    public List<MenuDTO> findByMenuPrice(Integer menuPrice) {
+        List<Menu> menus = menuRepository.findByMenuPriceGreaterThan(menuPrice);
+
+        return  menus.stream().map(menu -> modelMapper.map(menu,MenuDTO.class)).toList();
 
     /* 목차. Page -> 페이징 처리 후 */
     public Page<MenuDTO> findMenuList(Pageable pageable) {
@@ -30,5 +39,6 @@ public class MenuService {
 
         Page<Menu> menuList = menuRepository.findAll(pageable);
         return menuList.map(menu -> modelMapper.map(menu, MenuDTO.class));
+
     }
 }
