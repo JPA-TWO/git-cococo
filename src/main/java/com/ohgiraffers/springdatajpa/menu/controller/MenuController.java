@@ -10,8 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
 
 import java.util.List;
 
@@ -92,5 +92,17 @@ public class MenuController {
         menuService.registNewMenu(newMenu);
 
         return "redirect:/menu/list";
+    }
+
+    @GetMapping("/modify")
+    public void modifyPage() {}
+
+
+    @PostMapping("/modify")
+    public String modifyMenu(MenuDTO modifyMenu) {
+
+        menuService.modifyMenu(modifyMenu);
+
+        return "redirect:/menu/" + modifyMenu.getMenuCode();
     }
 }
