@@ -1,10 +1,10 @@
 package com.ohgiraffers.springdatajpa;
 
-import com.jayway.jsonpath.JsonPath;
 import com.ohgiraffers.springdatajpa.menu.dto.MenuDTO;
 import com.ohgiraffers.springdatajpa.menu.service.MenuService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import org.junit.jupiter.api.*;
 import org.modelmapper.ModelMapper;
@@ -14,8 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -51,6 +50,18 @@ class Chap06SpringDataJpaApplicationTests {
     // selectAll Test
 
     // selectByCode Test
+    @Test
+    public void 메뉴코드로_메뉴_조회_테스트() {
+
+        int menuCode = 9;
+
+        Menu foundMenu = entityManager.find(Menu.class, menuCode);
+
+        assertNotNull(foundMenu);
+        assertEquals(menuCode, foundMenu.getMenuCode());
+
+        System.out.println("foundMenu = " + foundMenu);
+    }
 
     // querySelect Test
 
@@ -64,6 +75,34 @@ class Chap06SpringDataJpaApplicationTests {
     }
 
     // insert Test
+    @Test
+    public void 신규메뉴_추가_테스트() {
+
+        Menu newMenu = new Menu();
+
+        newMenu.setMenuName("테스트 메뉴");
+        newMenu.setMenuPrice(10000);
+        newMenu.setCategoryCode(12);
+        newMenu.setOrderableStatus("Y");
+
+        System.out.println(newMenu.getMenuCode());
+
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+
+        try {
+            entityManager.persist(newMenu);
+            entityTransaction.commit();
+            System.out.println(newMenu.getMenuCode());
+            System.out.println("newMenu = " + newMenu);
+        } catch (Exception e) {
+            entityTransaction.rollback();
+            e.printStackTrace();
+        }
+
+        assertTrue(entityManager.contains(newMenu));
+
+    }
 
     // update Test
     @Test
