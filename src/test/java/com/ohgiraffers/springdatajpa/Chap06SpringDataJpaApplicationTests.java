@@ -10,14 +10,13 @@ import org.junit.jupiter.api.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
+//@Transactional
 class Chap06SpringDataJpaApplicationTests {
 
     private static EntityManagerFactory entityManagerFactory;
@@ -48,6 +47,23 @@ class Chap06SpringDataJpaApplicationTests {
     }
 
     // selectAll Test
+    @Test
+    public void 메뉴_전체조회_테스트() {
+
+        // when
+        // menuService.findMenuList() 메소드 이용하여 menuList 정의
+        List<MenuDTO> menuList = menuService.findMenuList();
+
+        // for문을 이용하여 개별 메뉴 출력
+        for (MenuDTO menu: menuList) {
+            System.out.println("menu = " + menu);
+        }
+
+        // then
+        // menuList에 null이 아니면 테스트를 통과한 것으로 간주
+        assertNotNull(menuList);
+
+    }
 
     // selectByCode Test
     @Test
@@ -122,4 +138,21 @@ class Chap06SpringDataJpaApplicationTests {
 
 
     // delete Test
+    @Test
+    public void 메뉴_삭제_테스트() {
+
+        // given
+        Menu menuToDelete = entityManager.find(Menu.class, 20);
+        System.out.println("삭제전 : menuToDelete = " + menuToDelete);
+
+        // when
+        menuService.deleteMenu(20);
+        entityManager.detach(menuToDelete);
+
+        // then
+        Menu removedMenu = entityManager.find(Menu.class, 20);
+        assertNull(removedMenu);
+
+    }
+
 }
