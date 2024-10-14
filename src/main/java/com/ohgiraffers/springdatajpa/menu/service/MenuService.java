@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuService {
@@ -36,6 +37,21 @@ public class MenuService {
 
         return menus.stream().map(menu -> modelMapper.map(menu, MenuDTO.class)).toList();
     }
+
+    public List<MenuDTO> findMenuList() {
+
+        /* 설명. findAll 메소드는 이미 구현 되어 있으므로 인터페이스에 따로 정의할 필요가 없다.
+         *  Sort(정렬) 기준을 전달하며 조회할 수도 있다.
+         * */
+        List<Menu> menuList = menuRepository.findAll(Sort.by("menuCode").descending());
+
+        // 람다식 사용 버전
+        return menuList
+                .stream()
+                .map(menu -> modelMapper.map(menu, MenuDTO.class))
+                .collect(Collectors.toList());
+    }
+
     /* 목차. Page -> 페이징 처리 후 */
     public Page<MenuDTO> findMenuList(Pageable pageable) {
 
@@ -62,6 +78,7 @@ public class MenuService {
 
     @Transactional
     public void deleteMenu(Integer menuCode) {
+        System.out.println("MenuDelete");
         menuRepository.deleteById(menuCode);
     }
 }
